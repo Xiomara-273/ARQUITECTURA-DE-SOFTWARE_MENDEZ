@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 4: Patrones y Datos en Microservicios</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Componentes de diseño específicos para enriquecer la Semana 4 */
+        .paradigm-shift-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #3b82f6;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .concept-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .p99-badge {
+            background: #ffedd5;
+            color: #ea580c;
+            font-family: monospace;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #fed7aa;
+        }
+        .tech-pill {
+            background: #0284c7;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: normal;
+        }
+        .observability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .obs-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8fafc;
+        }
+        .obs-item.logs { border-top: 4px solid #f59e0b; }
+        .obs-item.metrics { border-top: 4px solid #ef4444; }
+        .obs-item.traces { border-top: 4px solid #3b82f6; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>Manual Técnico <span>|</span> Arquitectura de Software</h1>
+        <a href="../index.html" class="nav-back-btn">← Volver al Inicio</a>
+    </nav>
+
+    <div class="main-container">
+        
+        <header class="semana-header">
+            <h2>Semana 4</h2>
+            <p>Patrones Avanzados, Gestión de Datos Distribuidos y Observabilidad en Ecosistemas de Microservicios</p>
+        </header>
+
+        <section class="card">
+            <div class="paradigm-shift-box">
+                <h3 style="color: #38bdf8; margin-top: 0;"><i class="fas fa-exchange-alt"></i> El Cambio de Paradigma</h3>
+                <p style="margin-bottom: 0; font-size: 0.95rem; text-align: justify; line-height: 1.6;">
+                    La arquitectura moderna evoluciona desde los sistemas monolíticos estructurados —donde todos los módulos conviven y se ejecutan dentro de un único proceso de memoria— hacia **ecosistemas fragmentados**. En este nuevo entorno distribuido, los componentes están completamente aislados y se ven obligados a colaborar de forma asíncrona a través de la red.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="concept-card" style="border-left: 4px solid #1e40af;">
+                    <h4 style="margin-top: 0; color: #1e3a8a;"><i class="fas fa-scissors"></i> Descomposición Funcional</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        Cada microservicio se enfoca de manera estricta y exclusiva en un único dominio de negocio, un concepto conocido como **Bounded Context** (Contexto Delimitado). Esto asegura que la complejidad de un módulo no contamine a los demás, minimizando el radio de explosión ante posibles fallos de infraestructura.
+                    </p>
+                </div>
+                <div class="concept-card" style="border-left: 4px solid #0f766e;">
+                    <h4 style="margin-top: 0; color: #0f766e;"><i class="fas fa-rocket"></i> Despliegue Independiente</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        Permite romper las dependencias organizacionales entre los equipos de desarrollo. Un equipo autónomo puede liberar actualizaciones o parches críticos para el servicio de cobros o facturación de forma aislada sin comprometer el catálogo general, acelerando drásticamente el *Time-to-Market*.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">1. Monolíticos vs. Fragmentados (Microservicios)</div>
+            <p style="margin-bottom: 20px; text-align: justify;">La descomposición de un sistema define cómo se distribuyen sus componentes y responsabilidades operativas en la infraestructura física y lógica de una organización.</p>
+            
+            <h3 style="color: #1e3a8a; margin-bottom: 10px;"><i class="fas fa-cube"></i> Sistemas Monolíticos</h3>
+            <p style="text-align: justify;">Un sistema monolítico unifica toda la lógica de negocio, las capas de acceso a datos y la interfaz de usuario en un único artefacto empaquetado y desplegable.</p>
+            <ul style="margin-left: 20px; margin-bottom: 25px; line-height: 1.6;">
+                <li><strong>WordPress (CMS):</strong> La lógica de administración de blogs, los temas visuales, el ecosistema de plugins y el core del sistema corren sobre el mismo servidor e interactúan directamente con una única base de datos central.</li>
+                <li><strong>Sistemas ERP Tradicionales:</strong> Herramientas locales empresariales que integran la contabilidad, el inventario físico y los recursos humanos en un solo ejecutable masivo.</li>
+                <li><strong>E-commerce Iniciales:</strong> Aplicaciones donde el flujo del carrito de compras, el catálogo de productos y el pasarela de pagos conviven en el mismo código fuente compartido.</li>
+            </ul>
+
+            <h3 style="color: #0284c7; margin-bottom: 10px;"><i class="fas fa-cubes"></i> Sistemas Fragmentados (Microservicios)</h3>
+            <p style="text-align: justify;">Un sistema fragmentado divide la aplicación en servicios atómicos independientes que cooperan de forma remota mediante protocolos de red estructurados (HTTP REST, gRPC o sistemas distribuidos de mensajería).</p>
+            <ul style="margin-left: 20px; line-height: 1.6;">
+                <li><strong>Netflix:</strong> Un servicio altamente especializado maneja el motor de recomendaciones, otro las cuentas y perfiles de usuario, y otro el streaming adaptativo de video; cada uno escala de forma elástica e independiente.</li>
+                <li><strong>Uber:</strong> Servicios aislados para el rastreo de geolocalización, cálculo dinámico de tarifas en tiempo real, procesamiento seguro de pagos y algoritmos de asignación de conductores.</li>
+                <li><strong>Amazon:</strong> El carrito de compras opera como un servicio autónomo con su propia persistencia de datos, completamente separado del motor de búsqueda y catalogación de productos.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <div class="card-title">2. Gestión de Datos: Saga Pattern vs. 2PC (Two-Phase Commit)</div>
+            <p style="margin-bottom: 15px; text-align: justify;">Garantizar y mantener la consistencia de la información cuando cada microservicio gobierna su propia base de datos es uno de los mayores desafíos en sistemas distribuidos. Existen dos estrategias principales:</p>
+            
+            <table class="meta-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #f1f5f9; font-weight: bold;">
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;">Característica</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1; background-color: #f0fdf4; color: #15803d;">Patrón SAGA (Asíncrono)</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1; background-color: #fff5f5; color: #991b1b;">2-Phase Commit (2PC)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label" style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Consistencia</strong></td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Eventual:</strong> El estado global se sincroniza progresivamente en el ecosistema tras unos segundos.</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Fuerte / Atómica:</strong> Todos los nodos cambian de estado de forma inmediata y simultánea.</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Bloqueo de Recursos</strong></td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>No bloqueante (Optimista):</strong> Las bases de datos locales confirman datos de inmediato, liberando hilos de ejecución.</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Sí (Bloqueante):</strong> Retiene y congela los recursos locales hasta que el coordinador central autoriza el commit.</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Escalabilidad</strong></td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Alta:</strong> Altamente tolerante debido a su naturaleza asíncrona basada en eventos.</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Baja:</strong> Tiende a convertirse en un cuello de botella masivo a medida que se añaden nuevos servicios.</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Estrategia ante Fallos</strong></td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Transacción Compensatoria:</strong> Si un paso del flujo falla, se ejecutan peticiones inversas lógicas para revertir los datos del pasado.</td>
+                        <td style="padding: 12px; border: 1px solid #cbd5e1;"><strong>Rollback Automático:</strong> El coordinador detecta el fallo en la fase de preparación y ordena abortar a todos los nodos de inmediato.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <div class="card-title">3. Patrones Fundamentales de Datos Distribuidos</div>
+            
+            <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-bottom: 5px;">Database-per-service</h3>
+                <p style="text-align: justify; margin-bottom: 5px;"><strong>Concepto Principal:</strong> Cada microservicio es el dueño absoluto y exclusivo de su propio almacenamiento de datos. Está estrictamente prohibido que un servicio externo consulte directamente las tablas o esquemas de otro; la comunicación de datos se realiza únicamente a través de APIs públicas. Esto rompe el acoplamiento oculto y permite la poliglotía (ej: usar MongoDB y PostgreSQL en el mismo sistema).</p>
+                <p><strong>Caso Real:</strong> En aplicaciones de delivery, el <i>Servicio de Cuentas</i> guarda credenciales en PostgreSQL, mientras que el <i>Servicio de Rastreo</i> maneja las coordenadas de los vehículos sobre Redis en tiempo real.</p>
+            </div>
+
+            <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-top: 15px; margin-bottom: 5px;">API Composition</h3>
+                <p style="text-align: justify; margin-bottom: 5px;"><strong>Concepto Principal:</strong> Mecanismo de consulta directo donde un componente denominado "Compositor de API" intercepta la petición del cliente, realiza múltiples llamadas HTTP/gRPC en paralelo a los microservicios involucrados y unifica las respuestas fragmentadas en una única entidad JSON estructurada en la capa de Gateway.</p>
+                <p><strong>Caso Real:</strong> Al renderizar el Dashboard de un usuario, el Gateway del sistema consulta en paralelo al <i>Servicio de Facturas</i> y al <i>Servicio de Preferencias</i> para servir toda la vista en una única llamada de red externa.</p>
+            </div>
+
+            <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-top: 15px; margin-bottom: 5px;">CQRS (Command Query Responsibility Segregation)</h3>
+                <p style="text-align: justify; margin-bottom: 5px;"><strong>Concepto Principal:</strong> Segregación explícita de las responsabilidades de lectura y escritura del sistema. La lógica de alteración de estado (Commands) se procesa en motores altamente transaccionales, mientras que las consultas (Queries) se ejecutan de manera aislada contra réplicas optimizadas o cachés de memoria para maximizar el rendimiento.</p>
+                <p><strong>Caso Real:</strong> En una ticketera masiva de eventos, la reserva del asiento (comando) ingresa a una base SQL transaccional estructurada, mientras que la vista en vivo de asientos disponibles para los millones de usuarios se sirve velozmente desde un clúster de Elasticsearch.</p>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <h3 style="color: #1e3a8a; margin-top: 15px; margin-bottom: 5px;">Idempotencia</h3>
+                <p style="text-align: justify; margin-bottom: 5px;"><strong>Concepto Principal:</strong> Atributo de diseño que garantiza que una operación del backend conserve exactamente el mismo estado del sistema sin importar cuántas veces se intente ejecutar la misma petición idéntica. En redes propensas a reintentos automáticos, previene duplicaciones catastróficas.</p>
+                <p><strong>Caso Real:</strong> Al procesar un pago digital, el servidor intercepta un identificador único global (UUID). Si el usuario presiona repetidamente el botón por problemas de latencia en su red, las peticiones duplicadas se ignoran al validar el ID existente.</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">4. Pilares de la Observabilidad y Metas de Rendimiento</div>
+            <p style="margin-bottom: 15px; text-align: justify;">
+                En sistemas distribuidos, el monitoreo tradicional es insuficiente. La **Observabilidad** es la capacidad técnica de inferir y comprender el estado de salud interno de un ecosistema complejo basándose exclusivamente en el análisis de sus salidas externas en tiempo real. Responde de forma sistemática a tres etapas críticas: **Detección** (¿Qué falla?), **Aislamiento** (¿Dónde está el cuello de botella?) y **Diagnóstico** (¿Por qué ocurre?).
+            </p>
+
+            <div class="observability-grid">
+                <div class="obs-item logs">
+                    <h4 style="margin-top:0; color:#d97706;"><i class="fas fa-file-alt"></i> Logs Centralizados</h4>
+                    <p style="font-size:0.85rem; margin-bottom:0; text-align:justify;">
+                        Registro textual estructurado de un evento discreto con marcas de tiempo explícitas. Permite reconstruir detalladamente la línea de tiempo de un suceso específico dentro de un contenedor aislado.
+                    </p>
+                </div>
+                <div class="obs-item metrics">
+                    <h4 style="margin-top:0; color:#dc2626;"><i class="fas fa-chart-area"></i> Métricas y Alertas</h4>
+                    <p style="font-size:0.85rem; margin-bottom:0; text-align:justify;">
+                        Valores numéricos agregados y contables que reflejan el comportamiento operativo del hardware y software a lo largo del tiempo (por ejemplo, porcentaje de consumo de CPU o tasas de error HTTP 5xx).
+                    </p>
+                </div>
+                <div class="obs-item traces">
+                    <h4 style="margin-top:0; color:#2563eb;"><i class="fas fa-route"></i> Trazas Distribuidas</h4>
+                    <p style="font-size:0.85rem; margin-bottom:0; text-align:justify;">
+                        Representan el mapa del viaje completo de una transacción a través de la malla de microservicios. Indican con precisión exacta cuántos milisegundos consumió cada llamada en red.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 25px;">
+                <div class="concept-card" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
+                    <h4 style="margin-top: 0; color: #0369a1;"><i class="fas fa-check-circle"></i> Disponibilidad Estricta (SLA)</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        Los acuerdos de nivel de servicio (SLA) modernos para arquitecturas distribuidas exigen un estándar mínimo del <span class="p99-badge" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">99.9%</span> de uptime operativo anual, minimizando las ventanas permitidas de inactividad técnica.
+                    </p>
+                </div>
+                <div class="concept-card" style="background-color: #fff7ed; border: 1px solid #fed7aa;">
+                    <h4 style="margin-top: 0; color: #c2410c;"><i class="fas fa-tachometer-alt"></i> Medición mediante Latencia P99</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        En microservicios, el promedio matemático es engañoso. Evaluamos la calidad mediante el **Percentil 99 (P99)**, garantizando que incluso el 1% de los usuarios que experimentan las condiciones de red más lentas reciban respuestas en rangos estables sub-200ms.
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="color: #1e3a8a; margin-top: 25px; margin-bottom: 10px;">Herramientas del Ecosistema Tecnológico</h3>
+            <div class="adr-box" style="border-left: 5px solid #0284c7; background-color: #1e293b; color: #f1f5f9; padding: 20px; border-radius: 8px;">
+                <p style="margin-bottom: 12px;"><strong style="color: #38bdf8;">Prometheus:</strong> Motor especializado en la recolección, almacenamiento temporal y consulta de **Métricas** en tiempo real mediante series de tiempo, configurando alertas predictivas ante saturación de servicios.</p>
+                <p style="margin-bottom: 12px;"><strong style="color: #38bdf8;">Stack ELK / Kibana:</strong> Ecosistema robusto encargado de centralizar, indexar y analizar volúmenes masivos de **Logs** distribuidos, facilitando búsquedas textuales cruzadas.</p>
+                <p style="margin-bottom: 12px;"><strong style="color: #38bdf8;">Jaeger:</strong> Plataforma de código abierto optimizada para la visualización de **Trazas (Traces)** distribuidas, indispensable para diagnosticar latencias y cuellos de botella en cascada entre servicios.</p>
+                <p style="margin-bottom: 0;"><strong style="color: #38bdf8;">Service Mesh (Malla de Servicios):</strong> Capa de infraestructura dedicada (como *Istio* o *Linkerd*) encargada de interceptar y gestionar la seguridad, políticas de reintentos, encriptación TLS mutua y el enrutamiento transparente del tráfico entre microservicios sin contaminar el código de la aplicación.</p>
+            </div>
+        </section>
+
+        <div class="pagination-container">
+            <a href="semana3.html" class="page-btn">← Semana 3</a>
+            <a href="semana5.html" class="page-btn">Semana 5 →</a>
+        </div>
+
+    </div> 
+</body>
+</html>

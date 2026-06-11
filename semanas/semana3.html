@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 3: Estilos Arquitectónicos y Calidad</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos específicos y refinados para enriquecer la Semana 3 */
+        .ejemplos-container {
+            margin-top: 15px;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .ejemplo-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+        .ejemplo-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .badge-tech {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+        
+        /* Nuevos componentes para la integración de diapositivas */
+        .intro-context {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #10b981;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .metric-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .danger-alert {
+            background: #fff5f5;
+            border: 1px solid #fee2e2;
+            border-left: 5px solid #ef4444;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .solution-box {
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            border-left: 5px solid #22c55e;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .iso-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .iso-table th {
+            background: #1e293b;
+            color: white;
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+        .iso-table td {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.88rem;
+        }
+        .iso-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .math-badge {
+            background: #f1f5f9;
+            color: #334155;
+            font-family: monospace;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>Manual Técnico <span>|</span> Arquitectura de Software</h1>
+        <a href="../index.html" class="nav-back-btn">← Volver al Inicio</a>
+    </nav>
+
+    <div class="main-container">
+        
+        <header class="semana-header">
+            <h2>Semana 3</h2>
+            <p>Estilos Estructurales de Software, Estándares de Calidad ISO/IEC 25010 y Riesgos de Diseño</p>
+        </header>
+
+        <section class="card">
+            <div class="intro-context">
+                <h3 style="color: #10b981; margin-top: 0;"><i class="fas fa-balance-scale"></i> El Núcleo del Diseño Arquitectónico</h3>
+                <p style="margin-bottom: 0; font-size: 0.95rem; text-align: justify; line-height: 1.6;">
+                    El diseño de arquitectura no consiste en elegir tecnologías al azar, sino en encontrar un **equilibrio óptimo entre agilidad y estructura**. Cada decisión estructural responde a la necesidad de mitigar riesgos técnicos, organizar el código para el crecimiento del equipo y garantizar que el producto de software pueda mantener sus niveles de calidad a lo largo del tiempo.
+                </p>
+            </div>
+            
+            <div class="grid-2">
+                <div class="metric-card">
+                    <h4 style="margin-top: 0; color: #1e3a8a;"><i class="fas fa-chart-line"></i> ¿Por qué adoptar un Estilo?</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        Un estilo de arquitectura provee un marco de trabajo abstracto que define cómo se estructuran las piezas de software, limitando las decisiones arbitrarias de los desarrolladores y permitiendo predecir el comportamiento del sistema bajo escenarios críticos de carga.
+                    </p>
+                </div>
+                <div class="metric-card">
+                    <h4 style="margin-top: 0; color: #0f766e;"><i class="fas fa-cogs"></i> Factores de Selección</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0; text-align: justify;">
+                        La elección de un estilo sobre otro (por ejemplo, Capas vs. Microkernel) se justifica mediante la evaluación rigurosa de restricciones organizacionales, el tamaño del equipo, las necesidades operativas de la infraestructura y el presupuesto disponible.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">1. Estilos de Arquitectura de Software y Ejemplos de Aplicación</div>
+            <p style="margin-bottom: 20px; text-align: justify;">Los estilos arquitectónicos definen un patrón de organización estructural abstracta para los componentes de un sistema, estableciendo las reglas de comunicación y restricciones operativas entre ellos.</p>
+            
+            <div style="margin-bottom: 25px; border-left: 4px solid #3b82f6; padding-left: 15px;">
+                <h3 style="color: #1d4ed8; font-size: 1.1rem; margin-bottom: 5px;">A. Arquitectura por Capas (Layered Architecture)</h3>
+                <p style="font-size: 0.95rem; text-align: justify;">Aísla responsabilidades de manera secuencial (Presentación, Negocio, Datos). Cada nivel posee un rol restrictivo y cerrado por defecto, comunicándose únicamente con su capa inferior inmediata para maximizar el desacoplamiento.</p>
+                
+                <div class="ejemplos-container">
+                    <h4 style="font-size: 0.9rem; color: #334155; margin-bottom: 10px;"><strong>5 Ejemplos de Software del Mundo Real:</strong></h4>
+                    <div class="ejemplo-item">
+                        <p><strong>1. Sistema Académico de Control de Notas (Yavirac)</strong> <span class="badge-tech">Python / Django</span><br>
+                        La vista HTML/JS captura la petición del alumno; la lógica en los controladores procesa si cumple las condiciones de asistencia, y el ORM gestiona de forma segura el registro físico en PostgreSQL.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>2. Aplicación de Banca Web Comercial</strong> <span class="badge-tech">Java / Spring Boot</span><br>
+                        La interfaz bancaria (Capa Web UI) invoca servicios de transferencia que validan fondos y tokens (Capa de Negocio), antes de enviar la transacción al mainframe bancario (Capa de Datos).</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>3. Sistemas de Gestión de Contenido (WordPress)</strong> <span class="badge-tech">PHP</span><br>
+                        El núcleo maneja plantillas visuales (Temas), lógica estructurada de procesamiento de posts (Core) y consultas parametrizadas hacia bases de datos relacionales MySQL.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>4. Plataformas de Facturación Electrónica</strong> <span class="badge-tech">.NET Core</span><br>
+                        La capa externa recibe los comprobantes XML, la capa intermedia aplica los esquemas de validación impositiva y firma digital legal, y la capa final almacena los históricos de auditoría.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>5. Aplicaciones ERP Empresariales Básicas (Odoo)</strong> <span class="badge-tech">Python / JavaScript</span><br>
+                        Separa estrictamente la interfaz de administración del inventario, los módulos lógicos de cálculo de costos de manufactura, y los esquemas de almacenamiento de datos contables.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px; border-left: 4px solid #10b981; padding-left: 15px;">
+                <h3 style="color: #047857; font-size: 1.1rem; margin-bottom: 5px;">B. Arquitectura Microkernel (Plug-in Architecture)</h3>
+                <p style="font-size: 0.95rem; text-align: justify;">Consiste en un núcleo centralizado (kernel) que ejecuta únicamente las operaciones mínimas esenciales para que el sistema funcione, permitiendo añadir extensiones operativas independientes (plugins) de forma dinámica sin apagar ni recompilar el sistema central.</p>
+                
+                <div class="ejemplos-container">
+                    <h4 style="font-size: 0.9rem; color: #334155; margin-bottom: 10px;"><strong>4 Ejemplos de Software del Mundo Real:</strong></h4>
+                    <div class="ejemplo-item">
+                        <p><strong>1. Visual Studio Code / IDEs de Desarrollo</strong> <span class="badge-tech">Electron / TS</span><br>
+                        El kernel central provee únicamente el editor de texto básico y la gestión de archivos. Las funciones avanzadas (compiladores de Python, formateadores de Angular, linters) se inyectan como extensiones externas independientes.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>2. Navegadores Web Modernos (Google Chrome)</strong> <span class="badge-tech">C++</span><br>
+                        El núcleo renderiza código HTML elemental y gestiona hilos de pestañas. Las extensiones descargadas de la Web Store añaden lógica complementaria (bloqueadores de anuncios, billeteras cripto) sin alterar el navegador base.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>3. Reproductores Multimedia (VLC Media Player)</strong> <span class="badge-tech">C</span><br>
+                        El software central organiza las listas de reproducción y la ventana de video. Los codecs específicos de decodificación de audio y video (MP4, MKV, FLAC) funcionan como complementos de extensión acoplables.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>4. Sistemas Operativos Monolíticos Flexibles (Linux Kernel)</strong> <span class="badge-tech">C</span><br>
+                        El núcleo primario maneja memoria y CPU de forma pura. Los controladores de hardware específicos (tarjetas gráficas ASUS TUF, teclados, adaptadores de red WiFi) se cargan dinámicamente como módulos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px; border-left: 4px solid #f59e0b; padding-left: 15px;">
+                <h3 style="color: #b45309; font-size: 1.1rem; margin-bottom: 5px;">C. Arquitectura de Pizarra (Blackboard Architecture)</h3>
+                <p style="font-size: 0.95rem; text-align: justify;">Diseñada para problemas complejos donde no existe una estrategia algorítmica determinista conocida. Múltiples agentes de conocimiento independientes leen y escriben datos en un espacio de memoria compartido central (pizarra) para solucionar problemas de forma colaborativa.</p>
+                
+                <div class="ejemplos-container">
+                    <h4 style="font-size: 0.9rem; color: #334155; margin-bottom: 10px;"><strong>7 Ejemplos de Software del Mundo Real:</strong></h4>
+                    <div class="ejemplo-item">
+                        <p><strong>1. Software de Reconocimiento de Voz Automatizado</strong><br>
+                        Un agente analiza las frecuencias de audio aisladas, otro procesa los fonemas individuales, un tercer agente evalúa las reglas gramaticales y un orquestador final une todo en la pizarra para generar el texto final inteligible.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>2. Sistemas de Inteligencia Artificial para Diagnósticos Médicos</strong><br>
+                        Múltiples sub-algoritmos independientes especializados analizan de forma paralela la misma pizarra de datos clínicos del paciente (un agente revisa radiografías, otro el historial de laboratorio, otro los signos vitales) para consolidar un diagnóstico.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>3. Sistemas de Control de Tráfico Aéreo</strong><br>
+                        Agentes independientes recopilan constantemente datos distribuidos (radares de velocidad, sensores meteorológicos, rutas de vuelo programadas y niveles de combustible), publicándolos en una memoria compartida para calcular alertas de colisión.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>4. Motores de Traducción de Lenguaje Natural Complejos</strong><br>
+                        Divide el procesamiento textual en la pizarra a través de agentes dedicados a la traducción semántica estructural, validación de modismos culturales de la región y corrección ortográfica iterativa.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>5. Compiladores Complejos y Avanzados de Optimización</strong><br>
+                        El código fuente se almacena en la pizarra común mientras diferentes analizadores (léxico, sintáctico, semántico y optimizadores de registros de CPU) modifican progresivamente el árbol sintáctico abstracto sin depender directamente entre sí.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>6. Sistemas Inteligentes de Conducción Autónoma (Vehículos Autónomos)</strong><br>
+                        Los sensores LIDAR, las cámaras de video y los mapas GPS inyectan lecturas continuas en una pizarra central de la computadora interna. Agentes de frenado, aceleración y dirección leen esta información compartida en tiempo real.</p>
+                    </div>
+                    <div class="ejemplo-item">
+                        <p><strong>7. Plataformas de Análisis Forense de Seguridad Informática</strong><br>
+                        Herramientas distribuidas publican trazas de logs sospechosos en una base central. Agentes independientes evalúan patrones de malware, intentos de fuerza bruta e IPs bloqueadas para expresar una alerta de intrusión unificada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">2. Los 8 Pilares de Calidad (ISO/IEC 25010)</div>
+            <p style="margin-bottom: 15px; text-align: justify;">El estándar internacional **ISO/IEC 25010** sustituye a la antigua norma ISO 9126 y define los modelos integrales para la evaluación sistemática de los atributos cualitativos del software. Estos pilares guían al arquitecto para transformar requerimientos no funcionales en metas medibles.</p>
+            
+            <table class="iso-table">
+                <thead>
+                    <tr style="background-color: #1e293b; color: white; font-weight: bold;">
+                        <th style="width: 30%;">Pilar de Calidad</th>
+                        <th style="width: 70%;">Descripción Técnica y Enfoque de Diseño</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Adecuación Funcional</strong></td>
+                        <td>Grado en que el software cumple con las necesidades explícitas e implícitas del negocio bajo condiciones específicas. Comprende la completitud, corrección y pertinencia funcional.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Eficiencia de Desempeño</strong></td>
+                        <td>Relación entre el nivel de rendimiento del software y la cantidad de recursos de hardware consumidos bajo carga activa. Evalúa tiempos de respuesta, uso de recursos y capacidad del sistema.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Compatibilidad</strong></td>
+                        <td>Capacidad de dos o más sistemas o componentes para intercambiar información y realizar funciones de forma cooperativa compartiendo el mismo entorno de hardware o software.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Usabilidad</strong></td>
+                        <td>Facilidad con la que los usuarios finales pueden comprender, aprender y operar la interfaz de la aplicación de manera efectiva, atractiva y segura para sus objetivos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Fiabilidad</strong></td>
+                        <td>Capacidad del sistema para desempeñar sus funciones especificadas de manera correcta y continua durante periodos de tiempo definidos. Mide la tolerancia a fallos y la capacidad de recuperación.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6. Seguridad</strong></td>
+                        <td>Protección de datos y sistemas ante accesos maliciosos malintencionados, garantizando la confidencialidad, integridad, no repudio y autenticidad de la información.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7. Mantenibilidad</strong></td>
+                        <td>Efectividad y eficiencia con la que el software puede ser modificado por los desarrolladores para corregir errores, refactorizar, adaptarse a nuevos entornos o escalar. Incluye modularidad y reusabilidad.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>8. Portabilidad</strong></td>
+                        <td>Facilidad con la que el sistema de software puede ser transferido y ejecutado de un entorno de hardware, sistema operativo o nube a otra de forma nativa sin requerir adaptaciones masivas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <div class="card-title">3. Riesgo de Diseño: Sinkhole Pattern</div>
+            <p style="text-align: justify; margin-bottom: 15px;">
+                <strong>Concepto Avanzado:</strong> El patrón de sumidero o *Sinkhole Pattern* es un riesgo arquitectónico crítico que se manifiesta principalmente en las arquitecturas estructuradas por capas. Ocurre cuando una solicitud del usuario viaja secuencialmente a través de los diferentes niveles del sistema sin que se le agregue ningún valor técnico, validación, o lógica de negocio real en las capas intermedias, actuando como un simple puente pasamanos de datos.
+            </p>
+
+            <div class="danger-alert">
+                <h4 style="margin-top: 0; color: #c53030;"><i class="fas fa-radiation-alt"></i> El Impacto Operativo y la Regla Matemática</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 10px; text-align: justify;">
+                    Este flujo innecesario consume ciclos de CPU, añade latencia en la comunicación interna y sobrecarga la memoria al crear múltiples instancias de objetos de datos idénticos (DTOs) que solo se reenvían de un punto a otro.
+                </p>
+                <p style="margin-bottom: 0; font-size: 0.95rem;">
+                    <i class="fas fa-calculator"></i> <strong>La Métrica de Control (Regla del 80-20):</strong> Un diseño saludable puede tolerar que un pequeño porcentaje de peticiones simples pasen directo. Sin embargo, si más del <span class="math-badge">20%</span> de las solicitudes se comportan como un sumidero, la arquitectura pierde su justificación y se vuelve un problema de rendimiento.
+                </p>
+            </div>
+
+            <div class="solution-box">
+                <h4 style="margin-top: 0; color: #22c55e;"><i class="fas fa-tools"></i> Estrategia de Mitigación: Capas Abiertas (Open Layers)</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0; text-align: justify;">
+                    Para solucionar el efecto Sinkhole, el arquitecto puede declarar ciertas capas operativas como **Abiertas (Open Layers)**. Esto rompe la restricción estricta de herencia secuencial, permitiendo que la capa de presentación o de control se salte la capa de servicios de negocio e invoque directamente a la capa de persistencia de datos únicamente en escenarios de consultas puras de lectura que no requieran procesamiento lógico.
+                </p>
+            </div>
+        </section>
+
+        <div class="pagination-container">
+            <a href="semana2.html" class="page-btn">← Semana 2</a>
+            <a href="semana4.html" class="page-btn">Semana 4 →</a>
+        </div>
+
+    </div> 
+</body>
+</html>

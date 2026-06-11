@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 5: Arquitectura Reactiva y Evolutiva</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos avanzados específicos para robustecer la Semana 5 */
+        .reactive-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #818cf8;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .pubsub-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .pubsub-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .badge-command {
+            background-color: #fee2e2;
+            color: #ef4444;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .badge-query {
+            background-color: #dbeafe;
+            color: #3b82f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .fitness-box {
+            border-left: 4px solid #10b981;
+            background-color: #f0fdf4;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+        }
+        .research-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .research-card h4 {
+            color: #1e3a8a;
+            margin-top: 0;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 5px;
+        }
+        .console-box {
+            background-color: #1e293b;
+            color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #0ea5e9;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        .console-title {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .code-header {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            border-radius: 6px 6px 0 0;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #334155;
+            margin-top: 15px;
+        }
+        pre {
+            margin-top: 0 !important;
+            border-radius: 0 0 6px 6px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>Manual Técnico <span>|</span> Arquitectura de Software</h1>
+        <a href="../index.html" class="nav-back-btn">← Volver al Inicio</a>
+    </nav>
+
+    <div class="main-container">
+        
+        <header class="semana-header">
+            <h2>Semana 5</h2>
+            <p>Arquitecturas Reactivas y Evolutivas: Eventos (EDA), CQRS Extendido y Adaptabilidad Guiada</p>
+        </header>
+
+        <section class="card">
+            <div class="reactive-box">
+                <h3 style="color: #a5b4fc; margin-top: 0;"><i class="fas fa-bolt"></i> El Paradigma Reactivo</h3>
+                <p style="margin-bottom: 0; font-size: 0.95rem; text-align: justify; line-height: 1.6;">
+                    Los sistemas modernos no esperan pasivamente a que un usuario ejecute una acción síncrona; **reaccionan a cambios de estado en tiempo real**. La arquitectura orientada a eventos (EDA) rompe las cadenas del acoplamiento tradicional, permitiendo que múltiples sistemas colaboren de forma asíncrona mediante flujos continuos de datos e información.
+                </p>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">1. Arquitectura Orientada a Eventos & Modelo Pub/Sub</div>
+            <p style="margin-bottom: 20px; text-align: justify;">
+                En lugar de utilizar peticiones e interacciones directas entre servicios (las cuales congelan los hilos de ejecución), los componentes notifican cualquier acontecimiento o cambio de estado enviando un mensaje estructurado de forma asíncrona a través de un intermediario central.
+            </p>
+
+            <div class="grid-3">
+                <div class="pubsub-card" style="border-top: 4px solid #3b82f6;">
+                    <i class="fas fa-bullhorn" style="color: #3b82f6;"></i>
+                    <h4 style="margin: 5px 0;">Productores</h4>
+                    <p style="font-size: 0.85rem; color: #64748b; text-align: justify;">Encargados de detectar los cambios de estado en el negocio y publicar el evento hacia la red sin preocuparse por quién lo va a escuchar.</p>
+                </div>
+                <div class="pubsub-card" style="border-top: 4px solid #818cf8;">
+                    <i class="fas fa-exchange-alt" style="color: #818cf8;"></i>
+                    <h4 style="margin: 5px 0;">Event Brokers</h4>
+                    <p style="font-size: 0.85rem; color: #64748b; text-align: justify;">Canales o intermediarios de infraestructura (como **Apache Kafka** o **RabbitMQ**) que reciben, enrutan y garantizan la persistencia de los mensajes.</p>
+                </div>
+                <div class="pubsub-card" style="border-top: 4px solid #10b981;">
+                    <i class="fas fa-box-open" style="color: #10b981;"></i>
+                    <h4 style="margin: 5px 0;">Consumidores</h4>
+                    <p style="font-size: 0.85rem; color: #64748b; text-align: justify;">Servicios autónomos subscritos a canales específicos que se activan y reaccionan de manera independiente en cuanto llega un nuevo evento.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">2. Ejercicios Prácticos Desarrollados en Clase</div>
+            <p style="margin-bottom: 20px; text-align: justify;">
+                A continuación se documentan detalladamente los 4 escenarios de diseño práctico planteados en las sesiones de desarrollo, incluyendo la simulación exacta de sus ejecuciones y salidas por consola:
+            </p>
+
+            <div style="margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-bottom: 10px;"><i class="fas fa-layer-group"></i> Ejercicio 1: Segregación de Responsabilidades con el Patrón CQRS</h3>
+                <p style="text-align: justify;">
+                    Estructuración del patrón que divide las acciones del sistema en **Comandos** (Escritura que altera el estado) y **Consultas** (Lectura pura desnormalizada). Esto evita bloqueos mutuos de procesos en la persistencia.
+                </p>
+                
+                <div class="code-header"><span>Estructura Lógica del Patrón CQRS</span><span>TypeScript / JavaScript</span></div>
+<pre><code>// --- Capa de Escritura (Commands) ---
+class RegistrarAsistenciaCommand {
+    constructor(public readonly estudianteId: string, public readonly estado: string) {}
+}
+
+class RegistrarAsistenciaHandler {
+    execute(command: RegistrarAsistenciaCommand) {
+        // Ejecuta reglas de validación pesadas en el modelo transaccional
+        console.log(`[WRITE MODEL]: Guardando registro inmutable del estudiante ${command.estudianteId} como [${command.estado}]...`);
+    }
+}
+
+// --- Capa de Lectura (Queries) ---
+class ObtenerRecordAsistenciaQuery {
+    constructor(public readonly estudianteId: string) {}
+}
+
+class ObtenerRecordAsistenciaHandler {
+    execute(query: ObtenerRecordAsistenciaQuery) {
+        // Lee directamente desde un caché o vista desnormalizada veloz
+        console.log(`[READ MODEL]: Recuperando DTO optimizado desde Redis para el ID: ${query.estudianteId}`);
+        return { estudianteId: query.estudianteId, porcentajeAsistencia: "94%" };
+    }
+}</code></pre>
+
+                <div class="console-title"><i class="fas fa-terminal"></i> Salida en Consola del Sistema</div>
+                <div class="console-box">
+                    [WRITE MODEL]: Guardando registro inmutable del estudiante EST-405 como [PRESENTE]...<br>
+                    [READ MODEL]: Recuperando DTO optimizado desde Redis para el ID: EST-405<br>
+                    { estudianteId: 'EST-405', porcentajeAsistencia: '94%' }
+                </div>
+            </div>
+
+            <div style="margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-bottom: 10px;"><i class="fas fa-project-diagram"></i> Ejercicio 2: Mecanismo de Arquitectura Orientada a Eventos (EDA)</h3>
+                <p style="text-align: justify;">
+                    Implementación de un Emisor de Eventos central (*Event EventEmitter*) que permite acoplar múltiples funciones observadoras independientes sin que el emisor conozca sus identidades internas.
+                </p>
+
+                <div class="code-header"><span>Componente de Mensajería Asíncrona</span><span>TypeScript</span></div>
+<pre><code>interface Observador {
+    notificar(evento: string, datos: any): void;
+}
+
+class EmisorEventosAsistencia {
+    private observadores: Observador[] = [];
+
+    public suscribir(observador: Observador) {
+        this.observadores.push(observador);
+    }
+
+    public disparar(evento: string, datos: any) {
+        console.log(`[EVENT BROKER]: Canal emitiendo evento del negocio: -> "${evento}"`);
+        this.observadores.forEach(obs => obs.notificar(evento, datos));
+    }
+}</code></pre>
+
+                <div class="console-title"><i class="fas fa-terminal"></i> Salida en Consola del Sistema</div>
+                <div class="console-box">
+                    [EVENT BROKER]: Canal emitiendo evento del negocio: -> "AsistenciaMarcada"<br>
+                    [NOTIFICADOR]: Alerta instantánea SMS enviada al tutor legal.<br>
+                    [REPORTES]: Incrementando contador de alumnos en aula en tiempo real.
+                </div>
+            </div>
+
+            <div style="margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px dashed #e2e8f0;">
+                <h3 style="color: #1e3a8a; margin-bottom: 10px;"><i class="fas fa-university"></i> Ejercicio 3: Caso de Negocio Real - Sistema Analítico de Asistencia</h3>
+                <p style="text-align: justify;">
+                    Modelado del comportamiento de un ecosistema reactivo de software educativo. En cuanto un estudiante marca su ingreso físico en el biométrico de la institución, se dispara en cascada la actualización de múltiples microservicios desacoplados.
+                </p>
+
+                <div class="code-header"><span>Flujo de Integración en Red</span><span>JavaScript Conceptual</span></div>
+<pre><code>// Flujo reactivo del caso de uso real
+function AlumnoMarcaIngreso(codigoTarjeta) {
+    const datosEvento = { tarjeta: codigoTarjeta, hora: "08:02 AM", campus: "Centro" };
+    
+    // El despachador publica el evento de forma asíncrona hacia la red de la institución
+    BrokerInstitucional.publish("INGRESO_DETECTADO", datosEvento);
+}</code></pre>
+
+                <div class="console-title"><i class="fas fa-terminal"></i> Salida en Consola del Sistema</div>
+                <div class="console-box">
+                    [BIOMÉTRICO]: Tarjeta NFC #1725546 leída correctamente.<br>
+                    [BROKER KAFKA]: Evento [INGRESO_DETECTADO] publicado en el clúster.<br>
+                    [SERV. CONTROL]: Estado del Alumno modificado a: "DENTRO DEL AULA".<br>
+                    [SERV. NOTIFICACIONES]: Generando correo electrónico institucional automático...<br>
+                    [SERV. ANALÍTICA]: Registro enviado al cubo OLAP para evaluar tasas de puntualidad semanales.
+                </div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <h3 style="color: #1e3a8a; margin-bottom: 10px;"><i class="fas fa-heartbeat"></i> Ejercicio 4: Verificación Continua con Arquitectura Evolutiva</h3>
+                <p style="text-align: justify;">
+                    Simulación del funcionamiento operativo de las **Fitness Functions** (Funciones de Aptitud) insertadas en los flujos de integración continua (CI/CD) para garantizar de manera automatizada que el acoplamiento y el rendimiento del código no se degraden con el tiempo.
+                </p>
+
+                <div class="code-header"><span>Pipeline Automatizado de Arquitectura</span><span>YAML / Bash Simulation</span></div>
+<pre><code># Simulación conceptual de la ejecución de una Fitness Function automatizada
+function ejecutarVerificacionArquitectonica() {
+    const acoplamientoEferente = calcularAcoplamiento();
+    const limitePermitido = 0.45;
+
+    if (acoplamientoEferente > limitePermitido) {
+        throw new Error("RECHAZADO: El nivel de acoplamiento es demasiado alto. El diseño está perdiendo evolutividad.");
+    }
+    return "APROBADO: Estructura limpia.";
+}</code></pre>
+
+                <div class="console-title"><i class="fas fa-terminal"></i> Salida en Consola del Sistema</div>
+                <div class="console-box">
+                    [CI/CD PIPELINE]: Iniciando suite automatizada de Fitness Functions...<br>
+                    [FITNESS CHECK]: Evaluando Complejidad Ciclomática general: Rango = 8 (ÓPTIMO).<br>
+                    [FITNESS CHECK]: Analizando dependencias cruzadas entre Microservicios...<br>
+                    [SUCCESS]: Coeficiente de Evolutividad f(a) = 0.92. Compilación aprobada para desplegar en producción de forma segura.
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">3. Consultas e Investigación Técnica Mandada a Hacer</div>
+            <p style="margin-bottom: 20px; text-align: justify;">
+                Desarrollo analítico y conceptual de las preguntas académicas planteadas en clase sobre la auditoría técnica y persistencia avanzada en sistemas distribuidos.
+            </p>
+
+            <div class="research-card">
+                <h4>A. ¿Qué es Event Sourcing?</h4>
+                <p style="text-align: justify;">
+                    Es un patrón arquitectónico de almacenamiento de datos donde, en lugar de guardar únicamente el valor o estado actual de un registro mediante sobreescrituras (CRUD tradicional), el sistema guarda de forma inmutable la **secuencia completa de eventos o cambios de estado** ocurridos a lo largo del tiempo. El estado actual se puede reconstruir en cualquier momento volviendo a procesar secuencialmente el historial de eventos desde el inicio.
+                </p>
+            </div>
+
+            <div class="research-card">
+                <h4>B. ¿Qué es un Event Store?</h4>
+                <p style="text-align: justify;">
+                    Es una base de datos especializada de tipo *Append-Only* (solo inserción y lectura) optimizada exclusivamente para trabajar con Event Sourcing. No permite modificaciones (*Updates*) ni eliminaciones (*Deletes*) de registros existentes bajo ninguna circunstancia. Debe ser extremadamente rápida para añadir mensajes secuenciales de forma cronológica y proveer suscripciones eficientes a canales en tiempo real (Ejemplos: **EventStoreDB** o clústeres optimizados de **Apache Kafka**).
+                </p>
+            </div>
+
+            <div class="research-card">
+                <h4>C. Diferencias entre CQRS y Event Sourcing</h4>
+                <table class="meta-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #e2e8f0;">
+                            <th style="padding: 10px; border: 1px solid #cbd5e1;">Criterio</th>
+                            <th style="padding: 10px; border: 1px solid #cbd5e1; color: #1e3a8a;">Patrón CQRS</th>
+                            <th style="padding: 10px; border: 1px solid #cbd5e1; color: #b45309;">Event Sourcing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Enfoque Principal</strong></td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Separa la ruta de lectura de los datos de la ruta de escritura del sistema.</td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Almacena la información como un historial secuencial e inmutable de eventos.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Base de Datos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Puede trabajar sobre una única base tradicional SQL o NoSQL compartida.</td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Requiere obligatoriamente un motor especializado de *Event Store*.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Relación Mutua</strong></td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Se puede implementar de forma aislada sin usar Event Sourcing.</td>
+                            <td style="padding: 10px; border: 1px solid #cbd5e1;">Casi siempre necesita acoplarse con CQRS para poder consultar los datos eficientemente.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="research-card">
+                <h4>D. Métricas Clave de la Arquitectura Evolutiva</h4>
+                <p style="text-align: justify; margin-bottom: 10px;">
+                    Son los indicadores técnicos que las *Fitness Functions* analizan constantemente en el código para medir su capacidad de adaptación frente al cambio:
+                </p>
+                <ul style="margin-left: 20px; line-height: 1.6;">
+                    <li><strong>Acoplamiento Aferente (Ca):</strong> Cuántas clases externas dependen de un componente interno. Mide la estabilidad.</li>
+                    <li><strong>Acoplamiento Eferente (Ce):</strong> De cuántas clases externas depende un componente interno para funcionar. Mide el impacto ante cambios.</li>
+                    <li><strong>Complejidad Ciclomática:</strong> Número de rutas estructurales lineales independientes en el código. Evita el código espagueti.</li>
+                    <li><strong>Cobertura de Pruebas (Test Coverage):</strong> Nivel de respaldo automatizado que protege las reglas de negocio críticas de la degradación.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">4. Arquitectura Evolutiva y Adaptabilidad</div>
+            <p style="text-align: justify;">
+                El software no es un ente estático. Una **Arquitectura Evolutiva** está diseñada específicamente para soportar el cambio constante, guiado e incremental a través de múltiples dimensiones a lo largo del tiempo, protegiendo las características esenciales del sistema contra la degradación técnica.
+            </p>
+
+            <div class="fitness-box">
+                <h4 style="color: #0f5132; margin-top: 0;"><i class="fas fa-shield-alt"></i> Fitness Functions (Funciones de Aptitud)</h4>
+                <p style="font-size: 0.9rem; text-align: justify; margin-bottom: 5px; color: #155724;">
+                    Son los guardianes matemáticos y automatizados del diseño de software. Se definen mediante métricas objetivas $$f(a) \rightarrow [0,1]$$ que evalúan de manera continua qué tan alineada está la estructura actual con sus objetivos clave de rendimiento y acoplamiento.
+                </p>
+                <p style="font-size: 0.85rem; color: #2b2d42; margin-bottom: 0;">
+                    <strong>Implementación en CI/CD:</strong> Se integran de forma automática dentro de los flujos de compilación (como GitHub Actions) para detectar instantáneamente regresiones operativas antes de desplegar.
+                </p>
+            </div>
+        </section>
+
+        <div class="pagination-container">
+            <a href="semana4.html" class="page-btn">← Semana 4</a>
+            <a href="../index.html" class="page-btn">Volver al Inicio <i class="fas fa-home"></i></a>
+        </div>
+
+    </div> 
+</body>
+</html>
