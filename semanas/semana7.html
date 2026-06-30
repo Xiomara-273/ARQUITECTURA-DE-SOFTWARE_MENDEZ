@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 7: Patrones de Diseño II - Comportamiento</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos dinámicos y ejecutivos premium para la Semana 7 */
+        .reactive-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #fbbf24;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .grid-pattern {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .pattern-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #fbbf24;
+            transition: transform 0.2s ease;
+        }
+        .pattern-card:hover {
+            transform: translateY(-2px);
+        }
+        .example-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #64748b;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+        }
+        .example-box strong {
+            color: #0f172a;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .research-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .research-card h4 {
+            color: #1e3a8a;
+            margin-top: 0;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 5px;
+        }
+        .category-block {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .category-block:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .category-block p {
+            margin: 0 0 10px 0;
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        .console-box {
+            background-color: #1e293b;
+            color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #38bdf8;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        .console-box.success {
+            color: #34d399;
+            border-left-color: #34d399;
+        }
+        .console-title {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .code-header {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            border-radius: 6px 6px 0 0;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #334155;
+            margin-top: 15px;
+        }
+        pre {
+            margin-top: 0 !important;
+            border-radius: 0 0 6px 6px !important;
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+        .challenge-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .criteria-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .criteria-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .criteria-list li i {
+            color: #34d399;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>Manual Técnico <span>|</span> IST Yavirac</h1>
+        <a href="../index.html" class="nav-back-btn">← Volver al Inicio</a>
+    </nav>
+
+    <div class="main-container">
+        
+        <header class="semana-header">
+            <h2>Patrones de Diseño II: Comportamiento</h2>
+            <p>Interacción Compleja, Flujos de Comunicación y Reducción de Dependencias Rígidas</p>
+            <small style="color: #64748b; font-weight: 500;">Semana 7 | Arquitectura de Software | IST Yavirac</small>
+        </header>
+
+        <section class="card">
+            <div class="reactive-box">
+                <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-brain"></i> ¿Qué son los Patrones de Comportamiento?</h3>
+                <p style="margin-bottom: 15px; font-size: 0.98rem; text-align: justify; line-height: 1.6;">
+                    Los patrones de comportamiento representan la última categoría del catálogo unificado de la <strong>Gang of Four (GoF)</strong>. A diferencia de los patrones creacionales y estructurales, estas soluciones se concentran única y exclusivamente en optimizar los algoritmos de interacción, definir flujos claros de comunicación y estandarizar la distribución de responsabilidades lógicas entre múltiples objetos acoplados dinámicamente en tiempo de ejecución.
+                </p>
+                <p style="margin-bottom: 0; font-size: 0.98rem; text-align: justify; line-height: 1.6;">
+                    Su principal objetivo dentro de la arquitectura de software moderna es erradicar el código acoplado de manera inflexible. Al encapsular las solicitudes y eventos mediante firmas genéricas, permiten que los diversos componentes del ecosistema colaboren de forma estrecha para resolver procesos de negocio complejos, manteniendo un acoplamiento débil que facilita enormemente la extensibilidad de la aplicación.
+                </p>
+            </div>
+
+            <div class="research-card" style="margin-top: 20px; border-left: 4px solid #fbbf24;">
+                <h4><i class="fas fa-link-slash"></i> El Impacto del Acoplamiento Rígido (Hardcore)</h4>
+                <div class="category-block">
+                    <p>
+                        Las <strong>conexiones rígidas o acoplamientos hardcore</strong> ocurren cuando un módulo funcional o clase de alto nivel depende explícitamente de las especificaciones concretas, métodos internos y tipos particulares de un componente secundario. Este tipo de diseño genera sistemas frágiles y monolíticos, donde cualquier sutil cambio en los requerimientos fuerza a los desarrolladores a refactorizar destructivamente múltiples archivos en cadena, incrementando el riesgo de bugs en producción.
+                    </p>
+                    <p>
+                        Al implementar los patrones de comportamiento, las responsabilidades se delegan en estructuras abstractas e independientes. El software adquiere la capacidad de alterar e intercambiar sus decisiones lógicas en caliente (runtime), logrando un entorno flexible donde es completamente viable añadir nuevas funcionalidades o pasarelas operativas sin tocar ni un solo fragmento de código de las clases core existentes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">1. El Catálogo de Comportamiento GoF</div>
+            <p style="text-align: justify;">
+                Detalle de los patrones orientados al comportamiento extraídos de las sesiones académicas, analizando sus propósitos fundamentales y dos escenarios de aplicación reales:
+            </p>
+
+            <div class="grid-pattern">
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-link"></i> Chain of Responsibility</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Permite pasar solicitudes a lo largo de una cadena jerárquica de manejadores independientes. Cada eslabón evalúa la petición y decide si la procesa o la delega al siguiente elemento.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Pipeline de Middleware de Autenticación</strong>
+                        Un filtro secuencial que valida las credenciales de sesión, inspecciona los permisos del rol académico y verifica si superó la cuota de peticiones.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Enrutador de Logs Técnicos</strong>
+                        Un gestor que intercepta excepciones de código decidiendo si guardarlas en consola, escribirlas en disco o reportarlas por correo según su gravedad.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-terminal"></i> Command</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Encapsula una acción u orden dentro de un objeto autónomo con todos sus parámetros. Facilita la parametrización de operaciones, retrasar tareas y construir colas de ejecución.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Historial de Edición Reversible (Undo/Redo)</strong>
+                        Guardar las acciones visuales ejecutadas sobre el portafolio en objetos independientes para poder revertirlas en el orden inverso exacto.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Cola de Peticiones HTTP</strong>
+                        Almacenar operaciones de inserción en una lista de comandos para despacharlas automáticamente una vez que el dispositivo recupere conexión.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-language"></i> Interpreter</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Establece una representación gramatical específica para un lenguaje o regla de negocio, implementando un evaluador dedicado a interpretar las sentencias del lenguaje.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Motor de Búsqueda Académica</strong>
+                        Un traductor interno que convierte strings introducidos por el usuario como <code>"ciclo:6 AND aprobado:true"</code> en consultas SQL válidas.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Parser de Fórmulas Matemáticas</strong>
+                        Un script especializado en descomponer cadenas de texto con fórmulas dinámicas para calcular promedios ponderados en tiempo real.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-list-ol"></i> Iterator</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Garantiza un mecanismo unificado para recorrer de forma secuencial los elementos de una colección compleja sin exponer sus detalles o representaciones internas de almacenamiento.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Navegación de Estructuras en Árbol</strong>
+                        Recorrer los nodos jerárquicos del organigrama institucional utilizando métodos secuenciales estandarizados como <code>next()</code>.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Paginación de Listados de Alumnos</strong>
+                        Un cursor abstracto que extrae bloques de datos sin importar si están guardados en un Array lineal o en un diccionario indexado.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-users-cog"></i> Mediator</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Restringe las interconexiones caóticas y directas entre objetos, obligándolos a comunicarse de forma exclusiva mediante un objeto mediador central que coordina las interacciones.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Orquestador de Cuadros de Mando (UI)</strong>
+                        Un mediador que escucha eventos de un botón y se encarga de refrescar gráficas, deshabilitar inputs y limpiar tablas sin que los componentes se conozcan.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Canales de Chat Multipunto</strong>
+                        Un servidor de chat que recibe un mensaje saliente y administra su correcta retransmisión hacia los sockets de los destinatarios correspondientes.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-history"></i> Memento</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Permite registrar y almacenar instantáneas del estado interno de un objeto sin quebrantar su encapsulamiento, facilitando la restauración exacta a dicho estado previo.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Borradores en Formularios de Registro</strong>
+                        Guardar copias temporales del progreso de un formulario para restaurar la información en caso de un cierre inesperado del navegador.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Puntos de Control en Configuración</strong>
+                        Capturar los valores de estilos asignados a un layout antes de aplicar una hoja de estilos de prueba, permitiendo deshacer cambios con un clic.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-bell"></i> Observer</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Sostiene una relación de suscripción uno a muchos de tal manera que, cuando el objeto principal sufre variaciones de estado, todos sus observadores son alertados automáticamente.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Notificaciones en Tableros Académicos</strong>
+                        Un módulo que dispara alertas push instantáneas en los portales de Alumnos y Docentes cuando se realiza la publicación de las actas definitivas.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Enlace de Datos Reactivos (Data Binding)</strong>
+                        Sincronizar y recalcular en vivo los campos de IVA, subtotal y totales de un comprobante electrónico al modificar las cantidades seleccionadas.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-toggle-on"></i> State</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Concede a un objeto la facultad de reconfigurar por completo su comportamiento operativo interno cada vez que se detectan fluctuaciones sobre su estado interno actual.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Ciclo de Aprobación de Tareas Académicas</strong>
+                        Un registro de calificaciones que bloquea o abre sus métodos de edición si se encuentra en estado "Borrador", "En Revisión" o "Bloqueado".
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Controladores de Reproducción Web</strong>
+                        Un botón interactivo multimedia que altera sus acciones e iconos de forma interna conmutando entre los estados "Cargando", "Reproduciendo" o "Pausado".
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-map-signs"></i> Strategy</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Encapsula una familia de algoritmos en clases independientes y estructuradas bajo una firma común, posibilitando al sistema conmutar estrategias operativas en runtime.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Conmutador de Pasarelas de Recaudación</strong>
+                        Un módulo de pagos universitarios que procesa transacciones intercambiando la lógica matemática según se elija Tarjeta, PayPal o Transferencia.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Algoritmos de Compresión de Archivos</strong>
+                        Una utilidad de carga que aplica algoritmos de compresión ZIP, RAR o TAR dinámicamente basándose en la extensión y tamaño del documento.
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <h3 style="color: #1e3a8a;"><i class="fas fa-shoe-prints"></i> Template Method</h3>
+                    <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                        Esboza la secuencia rígida de un algoritmo en una operación base, derivando la responsabilidad de detallar la lógica de pasos específicos en las subclases secundarias.
+                    </p>
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Exportador de Reportes de Notas</strong>
+                        Un método maestro que ejecuta de forma fija los pasos de conexión y consulta, pero deja que subclases definan si la salida se renderiza en PDF o Excel.
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo 2: Inicializadores de Componentes UI</strong>
+                        Un script que controla los tiempos de render e inyección en el DOM, permitiendo que vistas hijas personalicen únicamente las etiquetas internas.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pattern-card" style="margin-top: 20px;">
+                <h3 style="color: #1e3a8a;"><i class="fas fa-walking"></i> Visitor</h3>
+                <p style="text-align: justify; font-size: 0.9rem; margin: 10px 0;">
+                    Aísla un algoritmo o procesamiento operativo de la estructura física del conjunto de objetos sobre el cual actúa, añadiendo nuevas operaciones sin alterar las clases de origen.
+                </p>
+                <div class="grid-2">
+                    <div class="example-box" style="margin: 0;">
+                        <strong>Ejemplo 1: Generador de Auditorías del Sistema</strong>
+                        Un objeto visitante que extrae metadatos analíticos y de seguridad recorriendo las colecciones de usuarios sin alterar el core de negocio de las entidades.
+                    </div>
+                    <div class="example-box" style="margin: 0;">
+                        <strong>Ejemplo 2: Exportador de Configuraciones Escolares</strong>
+                        Un componente externo encargado de leer las estructuras de aulas virtuales para compilar un esquema JSON analítico para el departamento de IT.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">2. Aplicación en Acción: Patrón Strategy</div>
+            <p style="text-align: justify; margin-bottom: 15px;">
+                Simulador técnico en Python enfocado en erradicar las sentencias <code>if/else</code> severas de los esquemas financieros. Centraliza los cálculos de inscripción bajo una interfaz común intercambiable en caliente:
+            </p>
+
+            <div class="code-header"><span>Estrategias de Facturación Académica</span><span>Python 3.x</span></div>
+<pre><code>from abc import ABC, abstractmethod
+
+# --- INTERFAZ ABSTRACTA DE LA ESTRATEGIA ---
+class EstrategiaDescuento(ABC):
+    @abstractmethod
+    def calcular_arancel(self, costo_base: float) -> float:
+        pass
+
+# --- ESTRATEGIAS CONCRETAS E INTERCAMBIABLES ---
+class DescuentoRegular(EstrategiaDescuento):
+    def calcular_arancel(self, costo_base: float) -> float:
+        return costo_base
+
+class DescuentoBecaTotal(EstrategiaDescuento):
+    def calcular_arancel(self, costo_base: float) -> float:
+        print("[APLICADO]: Beneficio de beca académica integral. Reducción del 70%.")
+        return costo_base * 0.30
+
+class DescuentoConvenioCorporativo(EstrategiaDescuento):
+    def calcular_arancel(self, costo_base: float) -> float:
+        print("[APLICADO]: Convenio institucional activo. Reducción del 15%.")
+        return costo_base * 0.85
+
+# --- CONTEXTO OPERATIVO (Clase Cliente Desacoplada) ---
+class GestorMatriculasISTYavirac:
+    def __init__(self):
+        self._estrategia_actual = DescuentoRegular()
+
+    def establecer_estrategia(self, nueva_estrategia: EstrategiaDescuento):
+        self._estrategia_actual = nueva_estrategia
+
+    def procesar_pago_estudiante(self, arancel_base: float) -> float:
+        return self._estrategia_actual.calcular_arancel(arancel_base)
+
+if __name__ == "__main__":
+    sistema_pagos = GestorMatriculasISTYavirac()
+    valor_arancel = 120.00
+
+    print(f"Costo Base Inicial: ${sistema_pagos.procesar_pago_estudiante(valor_arancel)}")
+    
+    # Inyección dinámica en tiempo de ejecución
+    sistema_pagos.establecer_estrategia(DescuentoBecaTotal())
+    costo_final = sistema_pagos.procesar_pago_estudiante(valor_arancel)
+    print(f"Total Liquidado con Beca: ${costo_final:.2f}")</code></pre>
+
+            <div class="console-title"><i class="fas fa-terminal"></i> Salida en Consola del Sistema de Gestión</div>
+            <div class="console-box">
+                [SISTEMA]: Inicializando cálculo estándar de valores de inscripción...<br>
+                Costo Base Inicial: $120.0<br>
+                [RUNTIME]: Modificando algoritmo en caliente por evento de usuario...<br>
+                [APLICADO]: Beneficio de beca académica integral. Reducción del 70%.<br>
+                Total Liquidado con Beca: $36.00
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">3. Comparativa de Intención Técnica</div>
+            <p style="margin-bottom: 20px; text-align: justify;">
+                Tabla analítica detallando los propósitos arquitectónicos primarios de los patrones core evaluados durante la sesión:
+            </p>
+
+            <table class="meta-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #e2e8f0;">
+                        <th style="padding: 10px; border: 1px solid #cbd5e1;">Patrón Técnico</th>
+                        <th style="padding: 10px; border: 1px solid #cbd5e1; color: #1e3a8a;">Categoría GoF</th>
+                        <th style="padding: 10px; border: 1px solid #cbd5e1; color: #1e293b;">Propósito Arquitectónico Primario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Strategy</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #fbbf24; font-weight: bold;">Comportamiento</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">Intercambiar algoritmos lógicos en caliente sin alterar la estructura del cliente.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Observer</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #fbbf24; font-weight: bold;">Comportamiento</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">Notificar y sincronizar de forma reactiva dependencias ante mutaciones de estado.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Command</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #fbbf24; font-weight: bold;">Comportamiento</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">Convertir peticiones en objetos autónomos para soportar operaciones reversibles o colas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <div class="card-title">4. Laboratorio Práctico de la Semana</div>
+            <p style="text-align: justify; margin-bottom: 20px;">
+                Desafío integrador de desarrollo asignado para validar la asimilación de arquitecturas reactivas orientadas a eventos y desacoplamiento estructural:
+            </p>
+
+            <div class="grid-2">
+                <div class="challenge-box">
+                    <h4 style="color: #fbbf24; margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid #334155; padding-bottom: 8px;">
+                        <i class="fas fa-laptop-code"></i> El Reto: Notificador Reactivo de Lecciones
+                    </h4>
+                    <p style="text-align: justify; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 15px;">
+                        Los estudiantes deberán diseñar e implementar una arquitectura basada en el patrón <strong>Observer</strong>. Se requiere estructurar una entidad central llamada <code>ControladorLecciones</code> que actúe como sujeto de suscripción. Al momento de añadir nuevas lecciones o alterar contenidos del manual técnico, el sistema debe disparar notificaciones automáticas asíncronas en tiempo de ejecución a los observadores encargados de actualizar los contadores e indicadores de progreso de la interfaz.
+                    </p>
+                    <p style="font-size: 0.9rem; font-weight: 600; color: #fbbf24; margin: 0;">
+                        <i class="fas fa-bullseye"></i> Requisito Core: Deben coexistir al menos dos módulos observadores independientes interactuando en paralelo.
+                    </p>
+                </div>
+
+                <div class="research-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center;">
+                    <h4 style="color: #0f172a; font-size: 1.1rem; margin-top: 0;">Criterios de Evaluación</h4>
+                    <ul class="criteria-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Correcto aislamiento de interfaces abstractas para el Sujeto y los Observadores.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Uso eficiente de arreglos dinámicos en memoria para métodos de suscripción (<code>attach/detach</code>).</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Demostración de que la adición de nuevos módulos no requiere modificar el código fuente del objeto emisor.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-header"><span>Simulación Automática del Laboratorio Práctico</span><span>Python 3.x</span></div>
+<pre><code># --- INTERFAZ OBSERVA DOR (Abstracción) ---
+class ObservadorProgreso:
+    def actualizar(self, leccion: str):
+        pass
+
+# --- SUJETO EMISOR (Controlador de Estados) ---
+class ControladorLecciones:
+    def __init__(self):
+        self._observadores = []
+        self._ultima_leccion = ""
+
+    def suscribir(self, observador: ObservadorProgreso):
+        if observador not in self._observadores:
+            self._observadores.append(observador)
+
+    def notificar_cambios(self):
+        for observador in self._observadores:
+            observador.actualizar(self._ultima_leccion)
+
+    def publicar_nueva_leccion(self, nombre_leccion: str):
+        print(f"\n[SISTEMA AUTOMÁTICO]: Publicando nueva lección: '{nombre_leccion}'")
+        self._ultima_leccion = nombre_leccion
+        self.notificar_cambios()
+
+# --- SUSCRIPTORES CONCRETOS (Módulos de la UI) ---
+class ModuloContadorVisual(ObservadorProgreso):
+    def actualizar(self, leccion: str):
+        print(f" -> [UI CONTADOR]: Incrementando contador de lecciones. Nueva entrada detectada: {leccion}")
+
+class ModuloAlertaNotificaciones(ObservadorProgreso):
+    def actualizar(self, leccion: str):
+        print(f" -> [PUSH ALERT]: Despachando campana de notificación al alumno por la lección: {leccion}")
+
+# --- CORRIDA AUTOMÁTICA DEL SISTEMA ---
+if __name__ == "__main__":
+    # Inicialización del entorno reactivo
+    core_sistema = ControladorLecciones()
+    
+    ui_contador = ModuloContadorVisual()
+    ui_alertas = ModuloAlertaNotificaciones()
+    
+    # Registro dinámico de dependencias
+    core_sistema.suscribir(ui_contador)
+    core_sistema.suscribir(ui_alertas)
+    
+    # Simulación automática de eventos
+    core_sistema.publicar_nueva_leccion("Semana 7: Patrones de Comportamiento")</code></pre>
+
+            <div class="console-title"><i class="fas fa-terminal"></i> Verificación del Sistema Automático (Salida Esperada)</div>
+            <div class="console-box success">
+                [SISTEMA AUTOMÁTICO]: Publicando nueva lección: 'Semana 7: Patrones de Comportamiento'<br>
+                &nbsp;-> [UI CONTADOR]: Incrementando contador de lecciones. Nueva entrada detectada: Semana 7: Patrones de Comportamiento<br>
+                &nbsp;-> [PUSH ALERT]: Despachando campana de notificación al alumno por la lección: Semana 7: Patrones de Comportamiento
+            </div>
+        </section>
+
+        <div class="pagination-container">
+            <a href="semana6.html" class="page-btn">← Semana 6</a>
+            <a href="../index.html" class="page-btn">Volver al Inicio <i class="fas fa-home"></i></a>
+        </div>
+
+    </div> 
+</body>
+</html>
